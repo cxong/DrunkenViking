@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<title>Drunken Viking</title>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <script src="scripts/phaser.min.js"></script>
+        <script src="scripts/graphics.js"></script>
+        <script src="scripts/main.js"></script>
+        <script src="scripts/preload.js"></script>
+        <script src="scripts/boot.js"></script>
+        <style type="text/css">
+        body{
+        margin: 0;
+        padding: 0
+        }
+        </style>
+    </head>
+    <body>
+        <div id="gameContainer"></div>
+
+        <script type="text/javascript">
+        
+        window.onload = function() {
+            var game = new Phaser.Game(SCREEN_WIDTH, SCREEN_HEIGHT, Phaser.AUTO,
+                                       'gameContainer', null, false,
+                                       false);
+            game.state.add('boot', BasicGame.Boot);
+            game.state.add('preload', BasicGame.Preload);
+            game.state.add('game', GameState);
+            game.state.start('boot');
+        
+        };
+        
+        </script>
+    </body>
+</html>
