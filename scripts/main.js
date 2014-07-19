@@ -17,6 +17,11 @@ GameState.prototype.create = function() {
 
   this.groups = {};
   //this.bg = this.game.add.group();
+  
+  var map = this.game.add.tilemap('mario');
+  map.addTilesetImage('SuperMarioBros-World1-1', 'tiles');
+  var layer = map.createLayer('World1');
+  layer.resizeWorld();
 };
 
 GameState.prototype.update = function() {
