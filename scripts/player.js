@@ -14,17 +14,24 @@ Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 
 Player.prototype.move = function(dir) {
+  var grid = {x:this.grid.x, y:this.grid.y};
   if (dir == 'up') {
-    this.grid.y--;
+    grid.y--;
   } else if (dir == 'down') {
-    this.grid.y++;
+    grid.y++;
   } else if (dir == 'left') {
-    this.grid.x--;
+    grid.x--;
   } else if (dir == 'right') {
-    this.grid.x++;
+    grid.x++;
   } else {
     assert(false);
   }
+  // Check for out of bounds
+  if (grid.x < 0 || grid.y < 0 ||
+      grid.x >= SCREEN_WIDTH / TILE_SIZE || grid.y >= SCREEN_HEIGHT / TILE_SIZE) {
+    return;
+  }
+  this.grid = grid;
   var pos = g2p(this.grid);
   this.x = pos.x;
   this.y = pos.y;
