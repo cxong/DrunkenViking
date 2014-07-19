@@ -13,6 +13,7 @@ GameState.prototype.create = function() {
     pickup: this.game.add.audio("pickup"),
     cat: this.game.add.audio("cat"),
     glass: this.game.add.audio("glass"),
+    vomit: this.game.add.audio("vomit"),
     crickets: this.game.add.audio("crickets")
   };
 
@@ -85,6 +86,10 @@ GameState.prototype.move = function(dir) {
       this.sounds.breakSound.play();
     }
   } else if (indices[1] >= 0) {
-    this.sounds.pickup.play();
+    if (indices[1] == 311) {
+      this.sounds.vomit.play();
+    } else {
+      this.sounds.pickup.play();
+    }
   }
 };
