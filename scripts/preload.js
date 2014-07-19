@@ -21,7 +21,9 @@ BasicGame.Preload.prototype = {
 
         this.game.load.audio('step', 'sounds/step.wav');
         this.game.load.audio('bump', 'sounds/bump.wav');
-        this.game.load.audio('hiccup', 'sounds/hiccup.wav');
+        this.game.load.audio('hic', 'sounds/hiccup.wav');
+        this.game.load.audio('hrrng', 'sounds/hrrng.wav');
+        this.game.load.audio('groan', 'sounds/groan.wav');
     },
 
     create: function () {
