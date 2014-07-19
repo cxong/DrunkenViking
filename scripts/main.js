@@ -8,7 +8,8 @@ GameState.prototype.create = function() {
   
   this.sounds = {
     step: this.game.add.audio("step"),
-    bump: this.game.add.audio("bump")
+    bump: this.game.add.audio("bump"),
+    crickets: this.game.add.audio("crickets")
   };
 
   this.groups = {
@@ -40,6 +41,8 @@ GameState.prototype.create = function() {
   registerKey(this, Phaser.Keyboard.DOWN, 'down');
   registerKey(this, Phaser.Keyboard.LEFT, 'left');
   registerKey(this, Phaser.Keyboard.RIGHT, 'right');
+  
+  this.sounds.crickets.play('', 0, 0.02, true);
 };
 
 GameState.prototype.update = function() {
@@ -76,8 +79,8 @@ GameState.prototype.move = function(dir) {
   var walls = this.walls.getTiles(pos.x / 2, pos.y / 2, 0, 0);
   if (walls[0].index < 0) {
     this.player.move(grid);
-    this.sounds.step.play('', 0, 0.3);
+    this.sounds.step.play('', 0, 0.7);
   } else {
-    this.sounds.bump.play('', 0, 0.3);
+    this.sounds.bump.play('', 0, 0.7);
   }
 };

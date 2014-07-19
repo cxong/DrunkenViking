@@ -38,7 +38,7 @@ Player.prototype.update = function() {
   if (this.soundCounter < 0) {
     // play a random hiccup sound
     var sound = this.sounds[Math.floor(Math.random() * this.sounds.length)];
-    sound.sound.play('', 0, 0.3);
+    sound.sound.play('', 0, 0.7);
     this.soundCounter = (Math.random() + 0.5) * HICCUP_DELAY;
     this.speechBubble.x = this.x;
     this.speechBubble.y = this.y - 16;
