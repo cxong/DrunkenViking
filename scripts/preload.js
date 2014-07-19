@@ -14,8 +14,8 @@ BasicGame.Preload.prototype = {
         this.preloadBar.animations.play('bob');
         this.load.setPreloadSprite(this.preloadBar);
         
-        this.game.load.tilemap('mario', 'scripts/levels/super_mario.json', null, Phaser.Tilemap.TILED_JSON);
-        this.game.load.image('tiles', 'scripts/levels/super_mario.png');
+        this.game.load.tilemap('level1', 'scripts/levels/level1.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.image('tiles', 'images/Objects/Floor.png');
         
         
         //this.game.load.image('bg', 'images/bg.png');
