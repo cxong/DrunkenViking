@@ -1,33 +1,33 @@
 var Map = function(game, group, mapName) {
-  var map = game.add.tilemap(mapName);
-  map.addTilesetImage('Tiles', 'tiles');
-  var layerBack = map.createLayer('Background');
-  layerBack.scale = {x:2, y:2};
-  group.add(layerBack);
+  this.map = game.add.tilemap(mapName);
+  this.map.addTilesetImage('Tiles', 'tiles');
+  this.layerBack = this.map.createLayer('Background');
+  this.layerBack.scale = {x:2, y:2};
+  group.add(this.layerBack);
   
-  this.walls = map.createLayer('Walls');
+  this.walls = this.map.createLayer('Walls');
   this.walls.scale = {x:2, y:2};
   group.add(this.walls);
   
-  map.addTilesetImage('Good', 'tiles_before');
-  this.before = map.createLayer('Good');
+  this.map.addTilesetImage('Good', 'tiles_before');
+  this.before = this.map.createLayer('Good');
   this.before.scale = {x:2, y:2};
   group.add(this.before);
   
-  map.addTilesetImage('Broken', 'tiles_after');
-  this.after = map.createLayer('Broken');
+  this.map.addTilesetImage('Broken', 'tiles_after');
+  this.after = this.map.createLayer('Broken');
   this.after.scale = {x:2, y:2};
   group.add(this.after);
   
-  map.addTilesetImage('Bed', 'tiles_bed');
-  this.bed = map.createLayer('Bed');
+  this.map.addTilesetImage('Bed', 'tiles_bed');
+  this.bed = this.map.createLayer('Bed');
   this.bed.scale = {x:2, y:2};
   group.add(this.bed);
   
-  map.addTilesetImage('Objects', 'objects');
-  var objects = map.createLayer('Objects');
-  objects.scale = {x:2, y:2};
-  group.add(objects);
+  this.map.addTilesetImage('Decor', 'decor');
+  var decor = this.map.createLayer('Decor');
+  decor.scale = {x:2, y:2};
+  group.add(decor);
   
   // Set all "before" tiles to invisible
   for (var y = 0; y < SCREEN_HEIGHT / TILE_SIZE; y++) {
@@ -38,6 +38,15 @@ var Map = function(game, group, mapName) {
     }
   }
   this.before.dirty = true;
+  
+  this.currentTileIndex = 0;
+};
+
+Map.prototype.switchTiles = function() {
+  this.currentTileIndex = (this.currentTileIndex + 1) % 2;
+  var tileset = ['tiles', 'tiles_light'][this.currentTileIndex];
+  this.map.addTilesetImage('Tiles', tileset);
+  this.layerBack.dirty = true;
 };
 
 // Get the position of the bed
