@@ -15,7 +15,8 @@ BasicGame.Preload.prototype = {
         this.load.setPreloadSprite(this.preloadBar);
         
         this.game.load.tilemap('level1', 'scripts/levels/level1.json', null, Phaser.Tilemap.TILED_JSON);
-        this.game.load.image('tiles', 'images/Objects/Floor.png');
+        this.game.load.image('tiles', 'images/Objects/tiles.png');
+        this.game.load.spritesheet('viking', 'images/viking.png', 16, 16);
         
         
         //this.game.load.image('bg', 'images/bg.png');

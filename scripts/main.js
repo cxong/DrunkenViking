@@ -10,19 +10,32 @@ GameState.prototype.create = function() {
     //place: this.game.add.audio("place")
   };
 
-  this.groups = {};
+  this.groups = {
+    bg: this.game.add.group(),
+    sprites: this.game.add.group()
+  };
   //this.bg = this.game.add.group();
   
   var map = this.game.add.tilemap('level1');
   map.addTilesetImage('Tiles', 'tiles');
   var layer = map.createLayer('Map1');
   layer.scale = {x:2, y:2};
+  this.groups.bg.add(layer);
+
+  var player = new Player(this.game, {x:5, y:6});
+  this.groups.sprites.add(player);
   
-  var test = this.add.sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'platino');
-  test.width = TILE_SIZE;
-  test.height = TILE_SIZE;
-  test.animations.add('bob', [0, 1], 4, true);
-  test.animations.play('bob');
+  var registerKey = function(thegame, keycode, player, dir) {
+    var key = thegame.game.input.keyboard.addKey(keycode);
+    key.onDown.add(function(k)
+    {
+      player.move(dir);
+    }, thegame);
+  };
+  registerKey(this, Phaser.Keyboard.UP, player, 'up');
+  registerKey(this, Phaser.Keyboard.DOWN, player, 'down');
+  registerKey(this, Phaser.Keyboard.LEFT, player, 'left');
+  registerKey(this, Phaser.Keyboard.RIGHT, player, 'right');
 };
 
 GameState.prototype.update = function() {
@@ -31,4 +44,6 @@ GameState.prototype.update = function() {
     console.log("Clicked");
     //this.sounds.newLevel.play('', 0, 0.3);
   }
+  
+  // Move player
 };
