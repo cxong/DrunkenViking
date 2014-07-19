@@ -8,7 +8,8 @@ GameState.prototype.create = function() {
   
   this.sounds = {
     step: this.game.add.audio("step"),
-    bump: this.game.add.audio("bump")
+    bump: this.game.add.audio("bump"),
+    hiccup: this.game.add.audio("hiccup")
   };
 
   this.groups = {
@@ -29,7 +30,7 @@ GameState.prototype.create = function() {
   layerObjects.scale = {x:2, y:2};
   this.groups.bg.add(layerObjects);
 
-  this.player = new Player(this.game, {x:5, y:6});
+  this.player = new Player(this.game, {x:5, y:6}, [this.sounds.hiccup]);
   this.groups.sprites.add(this.player);
   
   var registerKey = function(thegame, keycode, dir) {
