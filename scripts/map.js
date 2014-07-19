@@ -19,10 +19,6 @@ var Map = function(game, group, mapName) {
   this.after.scale = {x:2, y:2};
   group.add(this.after);
   
-  this.shelves = map.createLayer('Shelf');
-  this.shelves.scale = {x:2, y:2};
-  group.add(this.shelves);
-  
   map.addTilesetImage('Bed', 'tiles_bed');
   this.bed = map.createLayer('Bed');
   this.bed.scale = {x:2, y:2};
@@ -83,27 +79,19 @@ Map.prototype.destroyAt = function(grid, dir) {
   var pos = g2p(grid);
   var tilePos = {x:pos.x / 2, y:pos.y / 2};
   var objects = this.after.getTiles(tilePos.x, tilePos.y, 0, 0);
-  var destroy = function(objectsAfter, after, before, tilePos) {
-    var indexAfter = objectsAfter.index;
-    objectsAfter.index = -1;
-    objectsAfter.alpha = 0;
-    after.dirty = true;
-    var objectsBefore = before.getTiles(tilePos.x, tilePos.y, 0, 0);
+  var isWall = this.isWall(grid);
+  // Can only destroy wall-mounted objects from below
+  if (objects[0].index >= 0 && (!isWall || dir == 'up')) {
+    var indexAfter = objects[0].index;
+    objects[0].index = -1;
+    objects[0].alpha = 0;
+    this.after.dirty = true;
+    var objectsBefore = this.before.getTiles(tilePos.x, tilePos.y, 0, 0);
     objectsBefore[0].alpha = 1;
-    before.dirty = true;
+    this.before.dirty = true;
     var indexBefore = objectsBefore[0].index;
     console.log('destroy ' + indexBefore + ':' + indexAfter);
     return [indexBefore, indexAfter];
-  };
-  if (objects[0].index >= 0) {
-    return destroy(objects[0], this.after, this.before, tilePos);
-  } else {
-    // Check if there's a shelf destruction
-    var shelves = this.shelves.getTiles(tilePos.x, tilePos.y, 0, 0);
-    // Can only destroy shelves from below
-    if (shelves[0].index >= 0 && dir == 'up') {
-      return destroy(shelves[0], this.shelves, this.before, tilePos);
-    }
   }
   return [-1, -1];
 };
