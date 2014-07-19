@@ -82,7 +82,7 @@ GameState.prototype.move = function(dir) {
   if (indices[0] >= 0) {
     if (indices[0] == 363) {
       this.sounds.cat.play();
-    } else if (indices[0] == 354 || indices[0] == 355) {
+    } else if (indices[0] == 354 || indices[0] == 355 || indices[0] == 386) {
       this.sounds.glass.play();
     } else {
       this.sounds.breakSound.play();
