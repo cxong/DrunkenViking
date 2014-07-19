@@ -18,11 +18,9 @@ BasicGame.Preload.prototype = {
         this.game.load.image('tiles', 'images/Objects/tiles_dark.png');
         this.game.load.image('objects', 'images/Objects/Decor0.png');
         this.game.load.spritesheet('viking', 'images/viking.png', 16, 16);
-        
-        
-        //this.game.load.image('bg', 'images/bg.png');
 
-        //this.game.load.audio('place', 'audio/place.mp3');
+        this.game.load.audio('step', 'sounds/step.wav');
+        this.game.load.audio('bump', 'sounds/bump.wav');
     },
 
     create: function () {

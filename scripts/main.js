@@ -7,14 +7,14 @@ GameState.prototype.create = function() {
   this.game.stage.backgroundColor = 0x664a33;
   
   this.sounds = {
-    //place: this.game.add.audio("place")
+    step: this.game.add.audio("step"),
+    bump: this.game.add.audio("bump")
   };
 
   this.groups = {
     bg: this.game.add.group(),
     sprites: this.game.add.group()
   };
-  //this.bg = this.game.add.group();
   
   var map = this.game.add.tilemap('level1');
   map.addTilesetImage('Tiles', 'tiles');
@@ -79,5 +79,8 @@ GameState.prototype.move = function(dir) {
   var walls = this.walls.getTiles(pos.x / 2, pos.y / 2, 0, 0);
   if (walls[0].index < 0) {
     this.player.move(grid);
+    this.sounds.step.play('', 0, 0.3);
+  } else {
+    this.sounds.bump.play('', 0, 0.3);
   }
 };
