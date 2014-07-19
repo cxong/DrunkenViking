@@ -11,7 +11,8 @@ var Player = function(game, grid, soundStrings) {
   this.width = TILE_SIZE;
   this.height = TILE_SIZE;
   this.animations.add('bob', [0, 1], 4, true);
-  this.animations.play('bob');
+  this.animations.add('bob_naked', [2, 3], 4, true);
+  this.animations.play('bob_naked');
   
   this.sounds = [];
   for (var i = 0; i < soundStrings.length; i++) {
@@ -34,6 +35,10 @@ Player.prototype.move = function(grid) {
   this.game.add.tween(this).to({x:pos.x, y:pos.y},
                                MOVE_DURATION,
                                Phaser.Easing.Sinusoidal.InOut).start();
+};
+
+Player.prototype.clothe = function() {
+  this.animations.play('bob');
 };
 
 Player.prototype.update = function() {

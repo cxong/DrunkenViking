@@ -24,7 +24,9 @@ GameState.prototype.create = function() {
   
   this.map = new Map(this.game, this.groups.bg, 'level1');
 
-  this.player = new Player(this.game, {x:5, y:6}, ['hrrng', 'hic', 'groan']);
+  this.player = new Player(this.game,
+                           this.map.getBed(),
+                           ['hrrng', 'hic', 'groan']);
   this.groups.sprites.add(this.player);
   
   var registerKey = function(thegame, keycode, dir) {
@@ -78,9 +80,9 @@ GameState.prototype.move = function(dir) {
   // Destroy items
   var indices = this.map.destroyAt(grid);
   if (indices[0] >= 0) {
-    if (indices[0] == 333) {
+    if (indices[0] == 363) {
       this.sounds.cat.play();
-    } else if (indices[0] == 324 || indices[0] == 325) {
+    } else if (indices[0] == 354 || indices[0] == 355) {
       this.sounds.glass.play();
     } else {
       this.sounds.breakSound.play();
@@ -90,6 +92,7 @@ GameState.prototype.move = function(dir) {
       this.sounds.vomit.play();
     } else {
       this.sounds.pickup.play();
+      this.player.clothe();
     }
   }
 };

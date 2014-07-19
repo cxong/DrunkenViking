@@ -4,17 +4,26 @@ var Map = function(game, group, mapName) {
   var layerBack = map.createLayer('Background');
   layerBack.scale = {x:2, y:2};
   group.add(layerBack);
+  
   this.walls = map.createLayer('Walls');
   this.walls.scale = {x:2, y:2};
   group.add(this.walls);
+  
   map.addTilesetImage('Good', 'tiles_before');
   this.before = map.createLayer('Good');
   this.before.scale = {x:2, y:2};
   group.add(this.before);
+  
   map.addTilesetImage('Broken', 'tiles_after');
   this.after = map.createLayer('Broken');
   this.after.scale = {x:2, y:2};
   group.add(this.after);
+  
+  map.addTilesetImage('Bed', 'tiles_bed');
+  this.bed = map.createLayer('Bed');
+  this.bed.scale = {x:2, y:2};
+  group.add(this.bed);
+  
   map.addTilesetImage('Objects', 'objects');
   var objects = map.createLayer('Objects');
   objects.scale = {x:2, y:2};
@@ -29,6 +38,22 @@ var Map = function(game, group, mapName) {
     }
   }
   this.before.dirty = true;
+};
+
+// Get the position of the bed
+// So we can place the player here
+Map.prototype.getBed = function() {
+  for (var y = 0; y < SCREEN_HEIGHT / TILE_SIZE; y++) {
+    for (var x = 0; x < SCREEN_WIDTH / TILE_SIZE; x++) {
+      var tilePos = {x:x * TILE_SIZE / 2, y:y * TILE_SIZE / 2};
+      var beds = this.bed.getTiles(tilePos.x, tilePos.y, 0, 0);
+      if (beds[0].index >= 0) {
+        return {x:x, y:y};
+      }
+    }
+  }
+  assert(false);
+  return null;
 };
 
 Map.prototype.isWall = function(grid) {
