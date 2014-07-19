@@ -35,7 +35,18 @@ Map.prototype.isWall = function(grid) {
   var pos = g2p(grid);
   var tilePos = {x:pos.x / 2, y:pos.y / 2};
   var walls = this.walls.getTiles(tilePos.x, tilePos.y, 0, 0);
-  return walls[0].index >= 0;
+  if (walls[0].index >= 0) {
+    return true;
+  }
+  
+  // Also check already-unbroken items
+  // These shouldn't be broken again
+  var unbrokens = this.before.getTiles(tilePos.x, tilePos.y, 0, 0);
+  if (unbrokens[0].index >= 0 && unbrokens[0].alpha > 0) {
+    return true;
+  }
+  
+  return false;
 };
 
 // Returns tile indices for before, after
