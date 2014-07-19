@@ -14,6 +14,7 @@ GameState.prototype.create = function() {
     cat: this.game.add.audio("cat"),
     glass: this.game.add.audio("glass"),
     vomit: this.game.add.audio("vomit"),
+    smash: this.game.add.audio("smash"),
     crickets: this.game.add.audio("crickets")
   };
 
@@ -78,13 +79,15 @@ GameState.prototype.move = function(dir) {
     this.sounds.step.play('', 0, 0.7);
   }
   // Destroy items
-  var indices = this.map.destroyAt(grid);
+  var indices = this.map.destroyAt(grid, dir);
   if (indices[0] >= 0) {
     if (indices[0] == 363) {
       this.sounds.cat.play();
     } else if (indices[0] == 354 || indices[0] == 355 || indices[0] == 386) {
       this.sounds.glass.play();
-    } else {
+    } else if (indices[0] >= 365 && indices[0] <= 370) {
+      this.sounds.smash.play();
+    }else {
       this.sounds.breakSound.play();
     }
   } else if (indices[1] >= 0) {
