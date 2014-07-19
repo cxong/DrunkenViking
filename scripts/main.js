@@ -9,6 +9,9 @@ GameState.prototype.create = function() {
   this.sounds = {
     step: this.game.add.audio("step"),
     bump: this.game.add.audio("bump"),
+    breakSound: this.game.add.audio("break"),
+    pickup: this.game.add.audio("pickup"),
+    cat: this.game.add.audio("cat"),
     crickets: this.game.add.audio("crickets")
   };
 
@@ -113,6 +116,15 @@ GameState.prototype.move = function(dir) {
     var objectsBefore = this.before.getTiles(tilePos.x, tilePos.y, 0, 0);
     objectsBefore[0].alpha = 1;
     this.before.dirty = true;
-    console.log('destroy ' + index);
+    if (objectsBefore[0].index >= 0) {
+      if (objectsBefore[0].index == 333) {
+        this.sounds.cat.play();
+      } else {
+        this.sounds.breakSound.play();
+      }
+    } else {
+      this.sounds.pickup.play();
+    }
+    console.log('destroy ' + objectsBefore[0].index);
   }
 };
