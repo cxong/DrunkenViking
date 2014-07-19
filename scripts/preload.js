@@ -31,6 +31,7 @@ BasicGame.Preload.prototype = {
         this.game.load.audio('break', 'sounds/break.wav');
         this.game.load.audio('pickup', 'sounds/pickup.wav');
         this.game.load.audio('cat', 'sounds/cat.wav');
+        this.game.load.audio('glass', 'sounds/glass.wav');
     },
 
     create: function () {

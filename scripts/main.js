@@ -12,6 +12,7 @@ GameState.prototype.create = function() {
     breakSound: this.game.add.audio("break"),
     pickup: this.game.add.audio("pickup"),
     cat: this.game.add.audio("cat"),
+    glass: this.game.add.audio("glass"),
     crickets: this.game.add.audio("crickets")
   };
 
@@ -78,6 +79,8 @@ GameState.prototype.move = function(dir) {
   if (indices[0] >= 0) {
     if (indices[0] == 333) {
       this.sounds.cat.play();
+    } else if (indices[0] == 324 || indices[0] == 325) {
+      this.sounds.glass.play();
     } else {
       this.sounds.breakSound.play();
     }
