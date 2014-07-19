@@ -1,5 +1,6 @@
 var HICCUP_DELAY = 300;
 var HICCUP_TEXT_DURATION = 100;
+var MOVE_DURATION = 130;
 var Player = function(game, grid, soundStrings) {
   this.grid = grid;
   var pixel = g2p(grid);
@@ -22,6 +23,7 @@ var Player = function(game, grid, soundStrings) {
   this.speechBubble = game.add.text(0, 0, '', speechStyle);
   this.speechBubble.alpha = 0;
   this.speechBubbleCounter = HICCUP_TEXT_DURATION;
+  this.game = game;
 };
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
@@ -29,8 +31,9 @@ Player.prototype.constructor = Player;
 Player.prototype.move = function(grid) {
   this.grid = grid;
   var pos = g2p(this.grid);
-  this.x = pos.x;
-  this.y = pos.y;
+  this.game.add.tween(this).to({x:pos.x, y:pos.y},
+                               MOVE_DURATION,
+                               Phaser.Easing.Sinusoidal.InOut).start();
 };
 
 Player.prototype.update = function() {
