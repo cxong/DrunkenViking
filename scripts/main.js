@@ -5,7 +5,7 @@ var levels = [
     day:'Sunnudagr',
     texts: [
       'By Thor, what a headache!',
-      'I must have drank too much mead last night,',
+      'I must have drunk too much mead last night,',
       'but I cannot remember how I got here!',
       '...',
       '...wait, it\'s all coming back now...',
@@ -55,10 +55,25 @@ GameState.prototype.create = function() {
     font: "32px VT323", fill: "#ff6666", align: "left"
   });
   this.instantReplayTween = this.game.add.tween(this.instantReplay)
-    .to({alpha: 0.2}, 300, Phaser.Easing.Sinusoidal.InOut)
+    .to({alpha: 0.5}, 300, Phaser.Easing.Sinusoidal.InOut)
     .to({alpha: 1}, 300, Phaser.Easing.Sinusoidal.InOut)
     .loop();
+  this.instantReplayTween.start();
+  this.instantReplayTween.pause();
   this.instantReplay.alpha = 0;
+  
+  this.hintText = this.game.add.text(SCREEN_WIDTH - 190, 48, 'Press R to reset', {
+    font: "24px VT323", fill: "#66ff66", align: "right"
+  });
+  this.hintTextTween = this.game.add.tween(this.hintText)
+    .to({alpha: 0.5}, 300, Phaser.Easing.Sinusoidal.InOut)
+    .to({alpha: 1}, 300, Phaser.Easing.Sinusoidal.InOut)
+    .loop();
+  this.hintTextTween.start();
+  this.hintTextTween.pause();
+  this.hintText.alpha = 0;
+  this.hintDisplayCounter = 0;
+  this.shoveCounter = 0;
   
   var registerKey = function(thegame, keycode, dir) {
     var key = thegame.game.input.keyboard.addKey(keycode);
@@ -68,6 +83,9 @@ GameState.prototype.create = function() {
   registerKey(this, Phaser.Keyboard.DOWN, 'down');
   registerKey(this, Phaser.Keyboard.LEFT, 'left');
   registerKey(this, Phaser.Keyboard.RIGHT, 'right');
+  this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(function(k) {
+    this.reset();
+  }, this);
   this.moves = [];
   this.movesIndex = -1;
 };
@@ -77,7 +95,7 @@ GameState.prototype.update = function() {
   if (this.instantReplay.alpha > 0) {
     // Check for end
     if (this.movesIndex < 0) {
-      this.instantReplayTween.stop();
+      this.instantReplayTween.pause();
       this.instantReplay.alpha = 0;
       // Show next level
       if (this.levelIndex < levels.length) {
@@ -89,12 +107,23 @@ GameState.prototype.update = function() {
       return;
     }
     // Replay the moves in reverse order
-    if (this.instantReplayCounter > 10) {
+    if (this.instantReplayCounter > 15) {
       this.move(this.moves[this.movesIndex]);
       this.movesIndex--;
       this.instantReplayCounter = 0;
     }
     this.instantReplayCounter++;
+  }
+  
+  // Show hint text
+  if (this.hintText.alpha > 0) {
+    this.hintDisplayCounter++;
+    if (this.hintDisplayCounter > 300) {
+      this.hintTextTween.pause();
+      this.hintText.alpha = 0;
+      this.hintDisplayCounter = 0;
+      this.shoveCounter = 0;
+    }
   }
 };
 
@@ -104,7 +133,7 @@ GameState.prototype.move = function(dir) {
     if (!this.dialog.next()) {
       // Check if we haven't showed the instant replay yet
       if (this.moves.length > 0) {
-        this.instantReplayTween.start();
+        this.instantReplayTween.resume();
         this.instantReplayCounter = 0;
         this.dialog.alpha = 0;
         return;
@@ -139,10 +168,17 @@ GameState.prototype.move = function(dir) {
     if (this.map.isWall(grid)) {
       this.sounds.bump.play('', 0, 0.7);
       this.moves.push(dir);
+      this.shoveCounter++;
+      if (this.shoveCounter > 5) {
+        this.hintTextTween.resume();
+        console.log('show hint');
+      }
+      console.log('shove ' + dir);
     } else {
       this.player.move(grid);
       this.sounds.step.play('', 0, 0.7);
       this.moves.push(dirReverse(dir));
+      console.log('move ' + dir);
     }
   } else {
     // Reverse game movement
@@ -183,4 +219,11 @@ GameState.prototype.move = function(dir) {
       }
     }
   }
+};
+
+GameState.prototype.reset = function(k) {
+  this.moves = [];
+  this.map.reset();
+  this.movesIndex = -1;
+  this.player.move(this.map.getBed());
 };

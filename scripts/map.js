@@ -29,23 +29,52 @@ var Map = function(game, group, mapName) {
   decor.scale = {x:2, y:2};
   group.add(decor);
   
+  this.sounds = [game.add.audio("birds"), game.add.audio("crickets")];
+  this.currentTileIndex = 0;
+  
+  this.reset();
+  
+  // Switch to daytime
+  if (this.currentTileIndex !== 0) {
+    this.switchTiles();
+  }
+};
+
+Map.prototype.reset = function() {
+  // Make sure we are at night
+  if (this.currentTileIndex != 1) {
+    this.switchTiles();
+  }
+  
+  var x;
+  var y;
+  var tilePos;
+  
   // Set all "before" tiles to invisible
-  for (var y = 0; y < SCREEN_HEIGHT / TILE_SIZE; y++) {
-    for (var x = 0; x < SCREEN_WIDTH / TILE_SIZE; x++) {
-      var tilePos = {x:x * TILE_SIZE / 2, y:y * TILE_SIZE / 2};
+  for (y = 0; y < SCREEN_HEIGHT / TILE_SIZE; y++) {
+    for (x = 0; x < SCREEN_WIDTH / TILE_SIZE; x++) {
+      tilePos = {x:x * TILE_SIZE / 2, y:y * TILE_SIZE / 2};
       var objectsBefore = this.before.getTiles(tilePos.x, tilePos.y, 0, 0);
       objectsBefore[0].alpha = 0;
     }
   }
   this.before.dirty = true;
   
-  this.currentTileIndex = 0;
-  this.sounds = [game.add.audio("birds"), game.add.audio("crickets")];
-  this.sounds[this.currentTileIndex].play('', 0, 0.05, true);
+  // Set all "after" tiles to visible
+  for (y = 0; y < SCREEN_HEIGHT / TILE_SIZE; y++) {
+    for (x = 0; x < SCREEN_WIDTH / TILE_SIZE; x++) {
+      tilePos = {x:x * TILE_SIZE / 2, y:y * TILE_SIZE / 2};
+      var objectsAfter = this.after.getTiles(tilePos.x, tilePos.y, 0, 0);
+      objectsAfter[0].alpha = 1;
+    }
+  }
+  this.after.dirty = true;
 };
 
 Map.prototype.switchTiles = function() {
-  this.sounds[this.currentTileIndex].stop();
+  if (this.sounds[this.currentTileIndex].isPlaying) {
+    this.sounds[this.currentTileIndex].stop();
+  }
   this.currentTileIndex = (this.currentTileIndex + 1) % 2;
   this.sounds[this.currentTileIndex].play('', 0, 0.05, true);
   var tileset = ['tiles_light', 'tiles'][this.currentTileIndex];
@@ -129,7 +158,7 @@ Map.prototype.destroyAt = function(grid, dir) {
     objectsBefore[0].alpha = 1;
     this.before.dirty = true;
     var indexBefore = objectsBefore[0].index;
-    console.log('destroy ' + indexBefore + ':' + indexAfter);
+    //console.log('destroy ' + indexBefore + ':' + indexAfter);
     return [indexBefore, indexAfter];
   }
   return [-1, -1];
@@ -150,7 +179,7 @@ Map.prototype.restoreAt = function(grid, dir) {
     objectsBefore[0].alpha = 0;
     this.before.dirty = true;
     var indexBefore = objectsBefore[0].index;
-    console.log('restore ' + indexBefore + ':' + indexAfter);
+    //console.log('restore ' + indexBefore + ':' + indexAfter);
     return [indexBefore, indexAfter];
   }
   return [-1, -1];

@@ -25,6 +25,7 @@ function addDir(grid, dir) {
   } else {
     assert(false);
   }
+  return grid;
 }
 
 function dirReverse(dir) {
