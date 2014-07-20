@@ -15,6 +15,12 @@ BasicGame.Preload.prototype = {
         this.load.setPreloadSprite(this.preloadBar);
         
         this.game.load.tilemap('level1', 'scripts/levels/level1.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('level2', 'scripts/levels/level2.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('level3', 'scripts/levels/level3.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('level4', 'scripts/levels/level4.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('level5', 'scripts/levels/level5.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('level6', 'scripts/levels/level6.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('level7', 'scripts/levels/level7.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('tiles', 'images/Objects/tiles_dark.png');
         this.game.load.image('tiles_light', 'images/Objects/tiles_light.png');
         this.game.load.image('tiles_before', 'images/Objects/items_before.png');

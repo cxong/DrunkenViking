@@ -11,6 +11,54 @@ var levels = [
       '...wait, it\'s all coming back now...',
       '(Retrace your trail of destruction to the front gate)'
     ]
+  },
+  {
+    level:'level2',
+    day:'Manadagr',
+    texts: [
+      'Manadagr: Birger, son of Hlodvir, is marrying a glorious wench!',
+      'We had too much to drink.'
+    ]
+  },
+  {
+    level:'level3',
+    day:'Tysdagr',
+    texts: [
+      'Tysdagr: that troll Thorgeir won\'t let us pillage today!',
+      'So instead we had a drink. Maybe too much.'
+    ]
+  },
+  {
+    level:'level4',
+    day:'Ooinsdagr',
+    texts: [
+      'Ooinsdagr: Njal quarreled with his wench again.',
+      'We cheered him up by getting drunk.'
+    ]
+  },
+  {
+    level:'level5',
+    day:'Thorsdagr',
+    texts: [
+      'Thorsdagr: Ragnar is getting married to that sweet lass Skuld!',
+      'We celebrated by having drinks.'
+    ]
+  },
+  {
+    level:'level6',
+    day:'Frjadagr',
+    texts: [
+      'Frjadagr: nothing to do but listen to Sigurd spin tales.',
+      'Eventually we decided to drink instead.'
+    ]
+  },
+  {
+    level:'level7',
+    day:'Laugardagr',
+    texts: [
+      'Laugardagr: I keep breaking things so Ulf got me new stuff.',
+      'What a fine Viking! I had to thank him by buying drinks.'
+    ]
   }
 ];
 
@@ -88,6 +136,7 @@ GameState.prototype.create = function() {
   }, this);
   this.moves = [];
   this.movesIndex = -1;
+  this.allowSpecialMovement = false;
 };
 
 GameState.prototype.update = function() {
@@ -99,8 +148,9 @@ GameState.prototype.update = function() {
       this.instantReplay.alpha = 0;
       // Show next level
       if (this.levelIndex < levels.length) {
-        this.dialog.setTexts([getScoreText(this.map, levels[this.levelIndex].day)]);
-        this.map.switchTiles();
+        this.map.stop();
+        this.map = new Map(this.game, this.groups.bg, levels[this.levelIndex].level);
+        this.dialog.setTexts(levels[this.levelIndex].texts);
         this.dialog.alpha = 1;
       }
       this.moves = [];
@@ -108,7 +158,9 @@ GameState.prototype.update = function() {
     }
     // Replay the moves in reverse order
     if (this.instantReplayCounter > 15) {
+      this.allowSpecialMovement = true;
       this.move(this.moves[this.movesIndex]);
+      this.allowSpecialMovement = false;
       this.movesIndex--;
       this.instantReplayCounter = 0;
     }
@@ -171,16 +223,16 @@ GameState.prototype.move = function(dir) {
       this.shoveCounter++;
       if (this.shoveCounter > 5) {
         this.hintTextTween.resume();
-        console.log('show hint');
+        //console.log('show hint');
       }
-      console.log('shove ' + dir);
+      //console.log('shove ' + dir);
     } else {
       this.player.move(grid);
       this.sounds.step.play('', 0, 0.7);
       this.moves.push(dirReverse(dir));
-      console.log('move ' + dir);
+      //console.log('move ' + dir);
     }
-  } else {
+  } else if (this.allowSpecialMovement) {
     // Reverse game movement
     if (this.map.isRealWall(grid)) {
       this.sounds.bump.play('', 0, 0.7);
@@ -200,7 +252,7 @@ GameState.prototype.move = function(dir) {
   if (indices[0] >= 0) {
     if (indices[0] == 187) {
       this.sounds.cat.play();
-    } else if (indices[0] >= 178 && indices[0] <= 183) {
+    } else if ((indices[0] >= 178 && indices[0] <= 183) || indices[0] == 210) {
       this.sounds.glass.play();
     } else if (indices[0] >= 189 && indices[0] <= 194) {
       this.sounds.smash.play();
@@ -226,4 +278,5 @@ GameState.prototype.reset = function(k) {
   this.map.reset();
   this.movesIndex = -1;
   this.player.move(this.map.getBed());
+  this.player.strip();
 };

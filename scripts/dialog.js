@@ -12,7 +12,7 @@ var Dialog = function(game, x, y, texts) {
   
   var textStyle = {
     font: "24px VT323", fill: "#ffffff", align: "left",
-    wordWrap: true, wordWrapWidth: this.width - 48 - 128
+    wordWrap: true, wordWrapWidth: this.width - 48 - 96
   };
   this.textSprite = game.add.text(this.x + 48, this.y + 8, '', textStyle);
   this.setTexts(texts);
