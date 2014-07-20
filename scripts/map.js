@@ -54,6 +54,22 @@ Map.prototype.switchTiles = function() {
   this.walls.dirty = true;
 };
 
+// Count the number of tiles that satisfy a condition
+Map.prototype.countTiles = function(layer1, layer2, cond) {
+  var count = 0;
+  for (var y = 0; y < SCREEN_HEIGHT / TILE_SIZE; y++) {
+    for (var x = 0; x < SCREEN_WIDTH / TILE_SIZE; x++) {
+      var tilePos = {x:x * TILE_SIZE / 2, y:y * TILE_SIZE / 2};
+      var tiles1 = layer1.getTiles(tilePos.x, tilePos.y, 0, 0);
+      var tiles2 = layer2.getTiles(tilePos.x, tilePos.y, 0, 0);
+      if (cond(tiles1[0], tiles2[0])) {
+        count++;
+      }
+    }
+  }
+  return count;
+};
+
 // Get the position of the bed
 // So we can place the player here
 Map.prototype.getBed = function() {
@@ -95,9 +111,8 @@ Map.prototype.destroyAt = function(grid, dir) {
   var objects = this.after.getTiles(tilePos.x, tilePos.y, 0, 0);
   var isWall = this.isWall(grid);
   // Can only destroy wall-mounted objects from below
-  if (objects[0].index >= 0 && (!isWall || dir == 'up')) {
+  if (objects[0].index >= 0 && objects[0].alpha === 1 && (!isWall || dir == 'up')) {
     var indexAfter = objects[0].index;
-    objects[0].index = -1;
     objects[0].alpha = 0;
     this.after.dirty = true;
     var objectsBefore = this.before.getTiles(tilePos.x, tilePos.y, 0, 0);

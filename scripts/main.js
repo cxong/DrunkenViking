@@ -14,7 +14,8 @@ GameState.prototype.create = function() {
     cat: this.game.add.audio("cat"),
     glass: this.game.add.audio("glass"),
     vomit: this.game.add.audio("vomit"),
-    smash: this.game.add.audio("smash")
+    smash: this.game.add.audio("smash"),
+    fanfare: this.game.add.audio("fanfare")
   };
 
   this.groups = {
@@ -89,6 +90,9 @@ GameState.prototype.move = function(dir) {
   // Check for out of bounds
   if (grid.x < 0 || grid.y < 0 ||
       grid.x >= SCREEN_WIDTH / TILE_SIZE || grid.y >= SCREEN_HEIGHT / TILE_SIZE) {
+    this.sounds.fanfare.play();
+    this.dialog.setTexts([getScoreText(this.map)]);
+    this.dialog.alpha = 1;
     return;
   }
   // Check for wall collision

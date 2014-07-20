@@ -14,10 +14,8 @@ var Dialog = function(game, x, y, texts) {
     font: "24px VT323", fill: "#ffffff", align: "left",
     wordWrap: true, wordWrapWidth: this.width - 48 - 128
   };
-  this.textCounter = 0;
-  this.texts = texts;
-  this.textSprite = game.add.text(this.x + 48, this.y + 8,
-                                  this.texts[this.textCounter], textStyle);
+  this.textSprite = game.add.text(this.x + 48, this.y + 8, '', textStyle);
+  this.setTexts(texts);
   this.sound = game.add.sound('beep');
 };
 Dialog.prototype = Object.create(Phaser.Sprite.prototype);
@@ -32,4 +30,10 @@ Dialog.prototype.next = function() {
   }
   this.textSprite.text = this.texts[this.textCounter];
   return true;
+};
+
+Dialog.prototype.setTexts = function(texts) {
+  this.textCounter = 0;
+  this.texts = texts;
+  this.textSprite.text = this.texts[this.textCounter];
 };
