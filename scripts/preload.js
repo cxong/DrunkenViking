@@ -34,6 +34,7 @@ BasicGame.Preload.prototype = {
         this.game.load.audio('birds', 'sounds/birds.mp3');
         this.game.load.audio('crickets', 'sounds/crickets.mp3');
         this.game.load.audio('fanfare', 'sounds/fanfare.mp3');
+        this.game.load.audio('tada', 'sounds/tada.mp3');
 
         this.game.load.audio('step', 'sounds/step.wav');
         this.game.load.audio('bump', 'sounds/bump.wav');

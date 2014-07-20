@@ -79,7 +79,8 @@ GameState.prototype.create = function() {
     glass: this.game.add.audio("glass"),
     vomit: this.game.add.audio("vomit"),
     smash: this.game.add.audio("smash"),
-    fanfare: this.game.add.audio("fanfare")
+    fanfare: this.game.add.audio("fanfare"),
+    tada: this.game.add.audio("tada")
   };
 
   this.groups = {
@@ -311,6 +312,7 @@ GameState.prototype.reset = function(k) {
 };
 
 GameState.prototype.makeWinScreen = function() {
+  this.sounds.tada.play();
   var win = this.game.add.sprite(64, 64, 'win');
   win.width *= 2;
   win.height *= 2;
