@@ -12,3 +12,32 @@ function p2g(pixel) {
     y:Math.floor(pixel.y / TILE_SIZE)
   };
 }
+
+function addDir(grid, dir) {
+  if (dir == 'up') {
+    grid.y--;
+  } else if (dir == 'down') {
+    grid.y++;
+  } else if (dir == 'left') {
+    grid.x--;
+  } else if (dir == 'right') {
+    grid.x++;
+  } else {
+    assert(false);
+  }
+}
+
+function dirReverse(dir) {
+  if (dir == 'up') {
+    return 'down';
+  } else if (dir == 'down') {
+    return 'up';
+  } else if (dir == 'left') {
+    return 'right';
+  } else if (dir == 'right') {
+    return 'left';
+  } else {
+    assert(false);
+    return null;
+  }
+}

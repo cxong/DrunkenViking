@@ -86,7 +86,7 @@ Map.prototype.getBed = function() {
   return null;
 };
 
-Map.prototype.isWall = function(grid) {
+Map.prototype.isRealWall = function(grid) {
   var pos = g2p(grid);
   var tilePos = {x:pos.x / 2, y:pos.y / 2};
   var walls = this.walls.getTiles(tilePos.x, tilePos.y, 0, 0);
@@ -94,6 +94,16 @@ Map.prototype.isWall = function(grid) {
     return true;
   }
   
+  return false;
+};
+
+Map.prototype.isWall = function(grid) {
+  if (this.isRealWall(grid)) {
+    return true;
+  }
+  
+  var pos = g2p(grid);
+  var tilePos = {x:pos.x / 2, y:pos.y / 2};
   // Also check already-unbroken items
   // These shouldn't be broken again
   var unbrokens = this.before.getTiles(tilePos.x, tilePos.y, 0, 0);
@@ -120,6 +130,27 @@ Map.prototype.destroyAt = function(grid, dir) {
     this.before.dirty = true;
     var indexBefore = objectsBefore[0].index;
     console.log('destroy ' + indexBefore + ':' + indexAfter);
+    return [indexBefore, indexAfter];
+  }
+  return [-1, -1];
+};
+
+// Returns tile indices for before, after
+Map.prototype.restoreAt = function(grid, dir) {
+  var pos = g2p(grid);
+  var tilePos = {x:pos.x / 2, y:pos.y / 2};
+  var objects = this.after.getTiles(tilePos.x, tilePos.y, 0, 0);
+  var isWall = this.isRealWall(grid);
+  // Can only destroy wall-mounted objects from below
+  if (objects[0].index >= 0 && objects[0].alpha === 0 && (!isWall || dir == 'up')) {
+    var indexAfter = objects[0].index;
+    objects[0].alpha = 1;
+    this.after.dirty = true;
+    var objectsBefore = this.before.getTiles(tilePos.x, tilePos.y, 0, 0);
+    objectsBefore[0].alpha = 0;
+    this.before.dirty = true;
+    var indexBefore = objectsBefore[0].index;
+    console.log('restore ' + indexBefore + ':' + indexAfter);
     return [indexBefore, indexAfter];
   }
   return [-1, -1];

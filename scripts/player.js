@@ -41,6 +41,10 @@ Player.prototype.clothe = function() {
   this.animations.play('bob');
 };
 
+Player.prototype.strip = function() {
+  this.animations.play('bob_naked');
+};
+
 Player.prototype.update = function() {
   this.soundCounter--;
   if (this.soundCounter < 0) {
