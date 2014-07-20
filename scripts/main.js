@@ -137,6 +137,31 @@ GameState.prototype.create = function() {
   this.moves = [];
   this.movesIndex = -1;
   this.allowSpecialMovement = false;
+  this.win = false;
+};
+
+GameState.prototype.stopReplay = function() {
+  this.instantReplayTween.pause();
+  this.instantReplay.alpha = 0;
+  // Show next level
+  if (this.levelIndex < levels.length) {
+    this.map.stop();
+    this.map = new Map(this.game, this.groups.bg, levels[this.levelIndex].level);
+    this.dialog.setTexts(levels[this.levelIndex].texts);
+    this.dialog.alpha = 1;
+  } else {
+    if (this.levelIndex >= levels.length) {
+      // Show end game screen
+      console.log('Winner');
+      this.win = true;
+      this.makeWinScreen();
+      return;
+    }
+  }
+  this.moves = [];
+  this.movesIndex = -1;
+  this.player.move(this.map.getBed());
+  this.player.strip();
 };
 
 GameState.prototype.update = function() {
@@ -144,16 +169,7 @@ GameState.prototype.update = function() {
   if (this.instantReplay.alpha > 0) {
     // Check for end
     if (this.movesIndex < 0) {
-      this.instantReplayTween.pause();
-      this.instantReplay.alpha = 0;
-      // Show next level
-      if (this.levelIndex < levels.length) {
-        this.map.stop();
-        this.map = new Map(this.game, this.groups.bg, levels[this.levelIndex].level);
-        this.dialog.setTexts(levels[this.levelIndex].texts);
-        this.dialog.alpha = 1;
-      }
-      this.moves = [];
+      this.stopReplay();
       return;
     }
     // Replay the moves in reverse order
@@ -180,6 +196,9 @@ GameState.prototype.update = function() {
 };
 
 GameState.prototype.move = function(dir) {
+  if (this.win) {
+    return;
+  }
   // If there are dialog boxes alive, move them instead
   if (this.dialog.alpha > 0) {
     if (!this.dialog.next()) {
@@ -192,6 +211,9 @@ GameState.prototype.move = function(dir) {
       }
       if (this.levelIndex >= levels.length) {
         // Show end game screen
+        console.log('Winner');
+        this.win = true;
+        this.makeWinScreen();
         return;
       }
       this.dialog.alpha = 0;
@@ -232,13 +254,20 @@ GameState.prototype.move = function(dir) {
       this.moves.push(dirReverse(dir));
       //console.log('move ' + dir);
     }
-  } else if (this.allowSpecialMovement) {
-    // Reverse game movement
-    if (this.map.isRealWall(grid)) {
-      this.sounds.bump.play('', 0, 0.7);
+  } else {
+    if (this.allowSpecialMovement) {
+      // Reverse game movement
+      if (this.map.isRealWall(grid)) {
+        this.sounds.bump.play('', 0, 0.7);
+      } else {
+        this.player.move(grid);
+        this.sounds.step.play('', 0, 0.7);
+      }
     } else {
-      this.player.move(grid);
-      this.sounds.step.play('', 0, 0.7);
+      // Trying to move during instant replay
+      // Cancel replay and move on
+      this.stopReplay();
+      return;
     }
   }
   // Destroy items
@@ -279,4 +308,20 @@ GameState.prototype.reset = function(k) {
   this.movesIndex = -1;
   this.player.move(this.map.getBed());
   this.player.strip();
+};
+
+GameState.prototype.makeWinScreen = function() {
+  var win = this.game.add.sprite(64, 64, 'win');
+  win.width *= 2;
+  win.height *= 2;
+  var viking = this.game.add.sprite(96, 96, 'viking');
+  viking.width *= 2;
+  viking.height *= 2;
+  viking.animations.add('bob', [0, 1], 4, true);
+  viking.animations.play('bob');
+  var platino = this.game.add.sprite(SCREEN_WIDTH - 96 - 32, 96, 'platino');
+  platino.width *= 2;
+  platino.height *= 2;
+  platino.animations.add('bob', [0, 1], 4, true);
+  platino.animations.play('bob');
 };

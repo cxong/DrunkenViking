@@ -29,6 +29,7 @@ BasicGame.Preload.prototype = {
         this.game.load.image('decor', 'images/decor.png');
         this.game.load.spritesheet('viking', 'images/viking.png', 16, 16);
         this.game.load.spritesheet('dialog', 'images/dialog.png', 192, 48);
+        this.game.load.image('win', 'images/win.png');
         
         this.game.load.audio('birds', 'sounds/birds.mp3');
         this.game.load.audio('crickets', 'sounds/crickets.mp3');
