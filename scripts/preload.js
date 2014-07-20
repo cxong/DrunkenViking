@@ -16,12 +16,15 @@ BasicGame.Preload.prototype = {
         
         this.game.load.tilemap('level1', 'scripts/levels/level1.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('tiles', 'images/Objects/tiles_dark.png');
+        this.game.load.image('tiles_light', 'images/Objects/tiles_light.png');
         this.game.load.image('tiles_before', 'images/Objects/items_before.png');
         this.game.load.image('tiles_after', 'images/Objects/items_after.png');
         this.game.load.image('tiles_bed', 'images/Objects/bed.png');
-        this.game.load.image('objects', 'images/Objects/Decor0.png');
+        this.game.load.image('decor', 'images/decor.png');
         this.game.load.spritesheet('viking', 'images/viking.png', 16, 16);
+        this.game.load.spritesheet('dialog', 'images/dialog.png', 192, 48);
         
+        this.game.load.audio('birds', 'sounds/birds.mp3');
         this.game.load.audio('crickets', 'sounds/crickets.mp3');
 
         this.game.load.audio('step', 'sounds/step.wav');
@@ -35,6 +38,7 @@ BasicGame.Preload.prototype = {
         this.game.load.audio('glass', 'sounds/glass.wav');
         this.game.load.audio('vomit', 'sounds/vomit.wav');
         this.game.load.audio('smash', 'sounds/smash.wav');
+        this.game.load.audio('beep', 'sounds/beep.wav');
     },
 
     create: function () {

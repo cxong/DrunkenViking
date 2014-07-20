@@ -1,6 +1,6 @@
 var Map = function(game, group, mapName) {
   this.map = game.add.tilemap(mapName);
-  this.map.addTilesetImage('Tiles', 'tiles');
+  this.map.addTilesetImage('Tiles', 'tiles_light');
   this.layerBack = this.map.createLayer('Background');
   this.layerBack.scale = {x:2, y:2};
   group.add(this.layerBack);
@@ -40,13 +40,18 @@ var Map = function(game, group, mapName) {
   this.before.dirty = true;
   
   this.currentTileIndex = 0;
+  this.sounds = [game.add.audio("birds"), game.add.audio("crickets")];
+  this.sounds[this.currentTileIndex].play('', 0, 0.05, true);
 };
 
 Map.prototype.switchTiles = function() {
+  this.sounds[this.currentTileIndex].stop();
   this.currentTileIndex = (this.currentTileIndex + 1) % 2;
-  var tileset = ['tiles', 'tiles_light'][this.currentTileIndex];
+  this.sounds[this.currentTileIndex].play('', 0, 0.05, true);
+  var tileset = ['tiles_light', 'tiles'][this.currentTileIndex];
   this.map.addTilesetImage('Tiles', tileset);
   this.layerBack.dirty = true;
+  this.walls.dirty = true;
 };
 
 // Get the position of the bed

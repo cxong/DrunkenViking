@@ -14,13 +14,13 @@ GameState.prototype.create = function() {
     cat: this.game.add.audio("cat"),
     glass: this.game.add.audio("glass"),
     vomit: this.game.add.audio("vomit"),
-    smash: this.game.add.audio("smash"),
-    crickets: this.game.add.audio("crickets")
+    smash: this.game.add.audio("smash")
   };
 
   this.groups = {
     bg: this.game.add.group(),
-    sprites: this.game.add.group()
+    sprites: this.game.add.group(),
+    dialogs: this.game.add.group()
   };
   
   this.map = new Map(this.game, this.groups.bg, 'level1');
@@ -30,6 +30,19 @@ GameState.prototype.create = function() {
                            ['hrrng', 'hic', 'groan']);
   this.groups.sprites.add(this.player);
   
+  var texts = [
+    'By Thor, what a headache!',
+    'I must have drank too much mead last night,',
+    'but I cannot remember how I got here!',
+    '...',
+    '...wait, it\'s all coming back now...',
+    '(Retrace your trail of destruction to the front gate)'
+  ];
+  this.dialog = new Dialog(this.game,
+                           SCREEN_WIDTH / 2, SCREEN_HEIGHT - 64,
+                           texts);
+  this.groups.dialogs.add(this.dialog);
+  
   var registerKey = function(thegame, keycode, dir) {
     var key = thegame.game.input.keyboard.addKey(keycode);
     key.onDown.add(function(k) { thegame.move(dir); }, thegame);
@@ -38,8 +51,6 @@ GameState.prototype.create = function() {
   registerKey(this, Phaser.Keyboard.DOWN, 'down');
   registerKey(this, Phaser.Keyboard.LEFT, 'left');
   registerKey(this, Phaser.Keyboard.RIGHT, 'right');
-  
-  this.sounds.crickets.play('', 0, 0.02, true);
 };
 
 GameState.prototype.update = function() {
@@ -53,6 +64,15 @@ GameState.prototype.update = function() {
 };
 
 GameState.prototype.move = function(dir) {
+  // If there are dialog boxes alive, move them instead
+  if (this.dialog.alpha > 0) {
+    if (!this.dialog.next()) {
+      this.dialog.alpha = 0;
+      this.map.switchTiles();
+    }
+    return;
+  }
+  
   // Find new grid position to move to
   var grid = {x:this.player.grid.x, y:this.player.grid.y};
   if (dir == 'up') {
@@ -81,17 +101,17 @@ GameState.prototype.move = function(dir) {
   // Destroy items
   var indices = this.map.destroyAt(grid, dir);
   if (indices[0] >= 0) {
-    if (indices[0] == 363) {
+    if (indices[0] == 187) {
       this.sounds.cat.play();
-    } else if (indices[0] == 354 || indices[0] == 355 || indices[0] == 386) {
+    } else if (indices[0] >= 178 && indices[0] <= 183) {
       this.sounds.glass.play();
-    } else if (indices[0] >= 365 && indices[0] <= 370) {
+    } else if (indices[0] >= 189 && indices[0] <= 194) {
       this.sounds.smash.play();
     }else {
       this.sounds.breakSound.play();
     }
   } else if (indices[1] >= 0) {
-    if (indices[1] == 311) {
+    if (indices[1] == 135) {
       this.sounds.vomit.play();
     } else {
       this.sounds.pickup.play();
