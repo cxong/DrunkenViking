@@ -22,20 +22,6 @@
     </head>
     <body>
         <div id="gameContainer"></div>
-
-        <script type="text/javascript">
-        
-        window.onload = function() {
-            var game = new Phaser.Game(SCREEN_WIDTH, SCREEN_HEIGHT, Phaser.AUTO,
-                                       'gameContainer', null, false,
-                                       false);
-            game.state.add('boot', BasicGame.Boot);
-            game.state.add('preload', BasicGame.Preload);
-            game.state.add('game', GameState);
-            game.state.start('boot');
-        
-        };
-        
-        </script>
+        <script src="scripts/index.js"></script>
     </body>
 </html>
