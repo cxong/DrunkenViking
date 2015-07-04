@@ -1,0 +1,15 @@
+{
+  "name": "Drunken Viking",
+  "description": "Top-down puzzle game, retrace your drunken rampage from the night before",
+  "launch_path": "/index.html",
+  "icons": {
+    "512": "images/icon-512.png",
+    "128": "images/icon-128.png"
+  },
+  "developer": {
+    "name": "congusbongus",
+    "url": "http://cxong.github.io"
+  },
+  "default_locale": "en",
+  "type": "web"
+}
