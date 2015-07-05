@@ -46,6 +46,7 @@ GameState.prototype.create = function() {
   this.instantReplayTween.start();
   this.instantReplayTween.pause();
   this.instantReplay.alpha = 0;
+  this.replaying = false;
   // Hide dialog initially
   this.groups.dialogs.alpha = 0;
   
@@ -123,10 +124,11 @@ GameState.prototype.loadLevel = function(i) {
 GameState.prototype.stopReplay = function() {
   this.instantReplayTween.pause();
   this.instantReplay.alpha = 0;
-  if (this.movesIndex < 0) {
+  if (!this.replaying) {
     // Nothing to replay
     return;
   }
+  this.replaying = false;
   // Show next level
   this.loadLevel(this.levelIndex + 1);
 };
@@ -218,6 +220,7 @@ GameState.prototype.move = function(dir) {
       this.dialog.setTexts([getScoreText(this.map, levels[this.levelIndex].day)]);
       this.dialog.alpha = 1;
       this.movesIndex = this.moves.length - 1;
+      this.replaying = true;
       // Save progress
       var levelsCompleted =
         parseInt(localStorage["DrunkenViking.levels"]);
