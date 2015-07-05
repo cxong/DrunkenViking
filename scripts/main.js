@@ -64,16 +64,29 @@ GameState.prototype.create = function() {
   
   this.title = new Title(this.game, this.groups.title, this);
   
+  this.lastDirection = null;
+  this.moveRepeatCounter = 0;
   var registerKey = function(thegame, keycode, dir) {
     var key = thegame.game.input.keyboard.addKey(keycode);
-    key.onDown.add(function(k) { thegame.move(dir); }, thegame);
+    key.onDown.add(function(k) {
+      thegame.lastDirection = dir;
+      thegame.moveRepeatCounter = 0;
+    }, thegame);
+    key.onUp.add(function(k) {
+      if (thegame.lastDirection == dir) {
+        thegame.lastDirection = null;
+      }
+    }, thegame);
   };
   registerKey(this, Phaser.Keyboard.UP, 'up');
   registerKey(this, Phaser.Keyboard.DOWN, 'down');
   registerKey(this, Phaser.Keyboard.LEFT, 'left');
   registerKey(this, Phaser.Keyboard.RIGHT, 'right');
   this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(function(k) {
-    this.reset();
+    if (this.groups.title.alpha == 0 &&
+        this.dialog.alpha == 0) {
+      this.reset();
+    }
   }, this);
   this.moves = [];
   this.movesIndex = -1;
@@ -119,6 +132,16 @@ GameState.prototype.stopReplay = function() {
 };
 
 GameState.prototype.update = function() {
+  // Automove
+  if (this.lastDirection != null) {
+    this.moveRepeatCounter--;
+    if (this.moveRepeatCounter <= 0) {
+      this.moveRepeatCounter = 17;
+      this.move(this.lastDirection);
+    }
+  } else {
+    this.moveRepeatCounter = 17;
+  }
   // If we're showing instant replay
   if (this.instantReplay.alpha > 0) {
     // Check for end
