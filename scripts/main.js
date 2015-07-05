@@ -86,7 +86,8 @@ GameState.prototype.create = function() {
   this.groups = {
     bg: this.game.add.group(),
     sprites: this.game.add.group(),
-    dialogs: this.game.add.group()
+    dialogs: this.game.add.group(),
+    title: this.game.add.group()
   };
   
   this.levelIndex = 0;
@@ -96,10 +97,9 @@ GameState.prototype.create = function() {
                            this.map.getBed(),
                            ['hrrng', 'hic', 'groan']);
   this.groups.sprites.add(this.player);
-  this.dialog = new Dialog(this.game,
+  this.dialog = new Dialog(this.game, this.groups.dialogs,
                            SCREEN_WIDTH / 2, SCREEN_HEIGHT - 64,
                            levels[this.levelIndex].texts);
-  this.groups.dialogs.add(this.dialog);
   this.instantReplay = this.game.add.text(48, 24, 'Instant Replay', {
     font: "32px VT323", fill: "#ff6666", align: "left"
   });
@@ -110,6 +110,8 @@ GameState.prototype.create = function() {
   this.instantReplayTween.start();
   this.instantReplayTween.pause();
   this.instantReplay.alpha = 0;
+  // Hide dialog initially
+  this.groups.dialogs.alpha = 0;
   
   this.hintText = this.game.add.text(SCREEN_WIDTH - 190, 24, 'Press R to reset', {
     font: "24px VT323", fill: "#66ff66", align: "right"
@@ -123,6 +125,8 @@ GameState.prototype.create = function() {
   this.hintText.alpha = 0;
   this.hintDisplayCounter = 0;
   this.shoveCounter = 0;
+  
+  this.title = new Title(this.game, this.groups.title);
   
   var registerKey = function(thegame, keycode, dir) {
     var key = thegame.game.input.keyboard.addKey(keycode);
@@ -200,8 +204,14 @@ GameState.prototype.move = function(dir) {
   if (this.win) {
     return;
   }
-  // If there are dialog boxes alive, move them instead
-  if (this.dialog.alpha > 0) {
+  // If the title is shown, dismiss first
+  if (this.groups.title.alpha > 0) {
+    this.title.hide();
+    // Show dialog
+    this.groups.dialogs.alpha = 1;
+    return;
+  } else if (this.dialog.alpha > 0) {
+    // If there are dialog boxes alive, move them instead
     if (!this.dialog.next()) {
       // Check if we haven't showed the instant replay yet
       if (this.moves.length > 0) {

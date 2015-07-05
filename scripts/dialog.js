@@ -1,4 +1,4 @@
-var Dialog = function(game, x, y, texts) {
+var Dialog = function(game, group, x, y, texts) {
   Phaser.Sprite.call(this,
                      game,
                      x, y,
@@ -17,6 +17,9 @@ var Dialog = function(game, x, y, texts) {
   this.textSprite = game.add.text(this.x + 48, this.y + 8, '', textStyle);
   this.setTexts(texts);
   this.sound = game.add.sound('beep');
+  
+  group.add(this);
+  group.add(this.textSprite);
 };
 Dialog.prototype = Object.create(Phaser.Sprite.prototype);
 Dialog.prototype.constructor = Dialog;
