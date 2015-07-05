@@ -31,10 +31,14 @@ var Title = function(game, group, gameState) {
   arrows.animations.play('bob');
   group.add(arrows);
   
+  this.group = group;
+  this.sound = game.add.sound('beep');
+  
   for (var i = 0; i < 7; i++) {
     var spacing = 76;
-    var button = game.add.button(SCREEN_WIDTH / 2 - (3 - i) * spacing,
-                                 SCREEN_HEIGHT * 0.88,
+    var x = SCREEN_WIDTH / 2 - (3 - i) * spacing;
+    var y = SCREEN_HEIGHT * 0.88;
+    var button = game.add.button(x, y,
                                  'button' + i);
     button.width *= 2;
     button.height *= 2;
@@ -48,13 +52,20 @@ var Title = function(game, group, gameState) {
     button.onInputDown.add(function(level) {
       return function() {
         gameState.loadLevel(level);
+        this.sound.play();
       }
     }(i), this);
     group.add(button);
+    
+    var label = game.add.text(x, y + 20,
+                              levels[i].day,
+                              {font: "16px VT323",
+                              fill: "#fff"});
+    label.anchor.setTo(0.5);
+    label.stroke = '#000';
+    label.strokeThickness = 3;
+    group.add(label);
   }
-  
-  this.group = group;
-  this.sound = game.add.sound('beep');
 };
 
 Title.prototype.hide = function() {
