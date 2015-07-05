@@ -3,7 +3,20 @@
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=VT323">
+        <style type="text/css">
+        @font-face {
+            font-family: 'VT323';
+            font-style: normal;
+            font-weight: 400;
+            src: local('VT323'), local('VT323-Regular'), url(VT323-Regular.ttf) format('truetype');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+            font-family: VT323;
+        }
+        </style>
         <script src="scripts/phaser.min.js"></script>
         <script src="scripts/graphics.js"></script>
         <script src="scripts/player.js"></script>
@@ -13,14 +26,9 @@
         <script src="scripts/main.js"></script>
         <script src="scripts/preload.js"></script>
         <script src="scripts/boot.js"></script>
-        <style type="text/css">
-        body{
-        margin: 0;
-        padding: 0
-        }
-        </style>
     </head>
     <body>
+        <div id="fontloader" style="display: none">Foobar</div>
         <div id="gameContainer"></div>
         <script src="scripts/index.js"></script>
     </body>
