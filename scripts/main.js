@@ -100,7 +100,7 @@ GameState.prototype.create = function() {
                            SCREEN_WIDTH / 2, SCREEN_HEIGHT - 64,
                            levels[this.levelIndex].texts);
   this.groups.dialogs.add(this.dialog);
-  this.instantReplay = this.game.add.text(48, 48, 'Instant Replay', {
+  this.instantReplay = this.game.add.text(48, 24, 'Instant Replay', {
     font: "32px VT323", fill: "#ff6666", align: "left"
   });
   this.instantReplayTween = this.game.add.tween(this.instantReplay)
@@ -111,7 +111,7 @@ GameState.prototype.create = function() {
   this.instantReplayTween.pause();
   this.instantReplay.alpha = 0;
   
-  this.hintText = this.game.add.text(SCREEN_WIDTH - 190, 48, 'Press R to reset', {
+  this.hintText = this.game.add.text(SCREEN_WIDTH - 190, 24, 'Press R to reset', {
     font: "24px VT323", fill: "#66ff66", align: "right"
   });
   this.hintTextTween = this.game.add.tween(this.hintText)
