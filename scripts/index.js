@@ -1,4 +1,5 @@
-window.onload = function() {
+window.onload = function() { setTimeout(function () {
+    document.getElementById('fontLoader').style.display = 'none';
     var game = new Phaser.Game(SCREEN_WIDTH, SCREEN_HEIGHT, Phaser.AUTO,
                                'gameContainer', null, false,
                                false);
@@ -6,4 +7,4 @@ window.onload = function() {
     game.state.add('preload', BasicGame.Preload);
     game.state.add('game', GameState);
     game.state.start('boot');
-};
+}, 1000); };
