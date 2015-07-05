@@ -1,6 +1,6 @@
-var Title = function(game, group) {
+var Title = function(game, group, gameState) {
   var text = game.add.text(SCREEN_WIDTH / 2,
-                           SCREEN_HEIGHT / 2,
+                           SCREEN_HEIGHT * 0.4,
                            'Drunken Viking',
                            {font: "96px VT323",
                            fill: "#aaa"});
@@ -30,6 +30,28 @@ var Title = function(game, group) {
   arrows.animations.add('bob', [0, 1], 4, true);
   arrows.animations.play('bob');
   group.add(arrows);
+  
+  for (var i = 0; i < 7; i++) {
+    var spacing = 76;
+    var button = game.add.button(SCREEN_WIDTH / 2 - (3 - i) * spacing,
+                                 SCREEN_HEIGHT * 0.88,
+                                 'button' + i);
+    button.width *= 2;
+    button.height *= 2;
+    button.anchor.setTo(0.5);
+    button.onInputOver.add(function(b) {
+      b.tint = 0xffaa00;
+    }, this);
+    button.onInputOut.add(function(b) {
+      b.tint = 0xffffff;
+    }, this);
+    button.onInputDown.add(function(level) {
+      return function() {
+        gameState.loadLevel(level);
+      }
+    }(i), this);
+    group.add(button);
+  }
   
   this.group = group;
   this.sound = game.add.sound('beep');

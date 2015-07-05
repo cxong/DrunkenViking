@@ -158,7 +158,7 @@ Map.prototype.destroyAt = function(grid, dir) {
     objectsBefore[0].alpha = 1;
     this.before.dirty = true;
     var indexBefore = objectsBefore[0].index;
-    console.log('destroy ' + indexBefore + ':' + indexAfter);
+    //console.log('destroy ' + indexBefore + ':' + indexAfter);
     return [indexBefore, indexAfter];
   }
   return [-1, -1];

@@ -27,6 +27,9 @@ BasicGame.Preload.prototype = {
         this.game.load.image('tiles_after', 'images/Objects/items_after.png');
         this.game.load.image('tiles_bed', 'images/Objects/bed.png');
         this.game.load.image('decor', 'images/decor.png');
+        for (var i = 0; i < 7; i++) {
+            this.game.load.image('button' + i, 'images/buttons/' + i + '.png');
+        }
         this.game.load.spritesheet('viking', 'images/viking.png', 16, 16);
         this.game.load.spritesheet('dialog', 'images/dialog.png', 192, 48);
         this.game.load.spritesheet('arrows', 'images/arrows.png', 52, 34);
