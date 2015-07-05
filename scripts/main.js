@@ -195,6 +195,13 @@ GameState.prototype.move = function(dir) {
       this.dialog.setTexts([getScoreText(this.map, levels[this.levelIndex].day)]);
       this.dialog.alpha = 1;
       this.movesIndex = this.moves.length - 1;
+      // Save progress
+      var levelsCompleted =
+        parseInt(localStorage["DrunkenViking.levels"]);
+      if (localStorage["DrunkenViking.levels"] == null ||
+          levelsCompleted < this.levelIndex + 1) {
+        localStorage["DrunkenViking.levels"] = this.levelIndex + 1;
+      }
       return;
     }
     // Check for wall collision

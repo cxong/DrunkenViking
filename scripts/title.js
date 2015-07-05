@@ -34,7 +34,9 @@ var Title = function(game, group, gameState) {
   this.group = group;
   this.sound = game.add.sound('beep');
   
-  for (var i = 0; i < 7; i++) {
+  var levelsCompleted =
+    parseInt(localStorage["DrunkenViking.levels"]);
+  for (var i = 0; i < levelsCompleted + 1; i++) {
     var spacing = 76;
     var x = SCREEN_WIDTH / 2 - (3 - i) * spacing;
     var y = SCREEN_HEIGHT * 0.88;
