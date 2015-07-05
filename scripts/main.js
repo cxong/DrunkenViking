@@ -16,7 +16,7 @@ var levels = [
     level:'level2',
     day:'Manadagr',
     texts: [
-      'Manadagr: Birger, son of Hlodvir, is marrying a glorious wench!',
+      'Manadagr: Birger, son of Hlodvir, is marrying that sweet lass Skuld!',
       'We had too much to drink.'
     ]
   },
@@ -40,7 +40,7 @@ var levels = [
     level:'level5',
     day:'Thorsdagr',
     texts: [
-      'Thorsdagr: Ragnar is getting married to that sweet lass Skuld!',
+      'Thorsdagr: Ragnar\'s wife gave birth to a strong Viking boy!',
       'We celebrated by having drinks.'
     ]
   },
