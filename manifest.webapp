@@ -11,5 +11,6 @@
     "url": "http://cxong.github.io"
   },
   "default_locale": "en",
-  "type": "web"
+  "type": "web",
+  "version": "1.1"
 }
