@@ -51,22 +51,20 @@ Map.prototype.reset = function() {
   var tilePos;
   
   // Set all "before" tiles to invisible
-  for (y = 0; y < SCREEN_HEIGHT / TILE_SIZE; y++) {
-    for (x = 0; x < SCREEN_WIDTH / TILE_SIZE; x++) {
-      tilePos = {x:x * TILE_SIZE / 2, y:y * TILE_SIZE / 2};
-      var objectsBefore = this.before.getTiles(tilePos.x, tilePos.y, 0, 0);
-      objectsBefore[0].alpha = 0;
-    }
+  var objectsBefore = this.before.getTiles(0, 0,
+                                           this.before.width,
+                                           this.before.height);
+  for (var i = 0; i < objectsBefore.length; i++) {
+    objectsBefore[i].alpha = 0;
   }
   this.before.dirty = true;
   
   // Set all "after" tiles to visible
-  for (y = 0; y < SCREEN_HEIGHT / TILE_SIZE; y++) {
-    for (x = 0; x < SCREEN_WIDTH / TILE_SIZE; x++) {
-      tilePos = {x:x * TILE_SIZE / 2, y:y * TILE_SIZE / 2};
-      var objectsAfter = this.after.getTiles(tilePos.x, tilePos.y, 0, 0);
-      objectsAfter[0].alpha = 1;
-    }
+  var objectsAfter = this.after.getTiles(0, 0,
+                                         this.after.width,
+                                         this.after.height);
+  for (var i = 0; i < objectsAfter.length; i++) {
+    objectsAfter[i].alpha = 1;
   }
   this.after.dirty = true;
 };
@@ -86,14 +84,11 @@ Map.prototype.switchTiles = function() {
 // Count the number of tiles that satisfy a condition
 Map.prototype.countTiles = function(layer1, layer2, cond) {
   var count = 0;
-  for (var y = 0; y < SCREEN_HEIGHT / TILE_SIZE; y++) {
-    for (var x = 0; x < SCREEN_WIDTH / TILE_SIZE; x++) {
-      var tilePos = {x:x * TILE_SIZE / 2, y:y * TILE_SIZE / 2};
-      var tiles1 = layer1.getTiles(tilePos.x, tilePos.y, 0, 0);
-      var tiles2 = layer2.getTiles(tilePos.x, tilePos.y, 0, 0);
-      if (cond(tiles1[0], tiles2[0])) {
-        count++;
-      }
+  var tiles1 = layer1.getTiles(0, 0, layer1.width, layer1.height);
+  var tiles2 = layer2.getTiles(0, 0, layer2.width, layer2.height);
+  for (var i = 0; i < tiles1.length; i++) {
+    if (cond(tiles1[i], tiles2[i])) {
+      count++;
     }
   }
   return count;
@@ -102,13 +97,10 @@ Map.prototype.countTiles = function(layer1, layer2, cond) {
 // Get the position of the bed
 // So we can place the player here
 Map.prototype.getBed = function() {
-  for (var y = 0; y < SCREEN_HEIGHT / TILE_SIZE; y++) {
-    for (var x = 0; x < SCREEN_WIDTH / TILE_SIZE; x++) {
-      var tilePos = {x:x * TILE_SIZE / 2, y:y * TILE_SIZE / 2};
-      var beds = this.bed.getTiles(tilePos.x, tilePos.y, 0, 0);
-      if (beds[0].index >= 0) {
-        return {x:x, y:y};
-      }
+  var beds = this.bed.getTiles(0, 0, this.bed.width, this.bed.height);
+  for (var i = 0; i < beds.length; i++) {
+    if (beds[i].index >= 0) {
+      return {x:i % this.map.width, y:Math.floor(i / this.map.width)};
     }
   }
   assert(false);
@@ -116,14 +108,8 @@ Map.prototype.getBed = function() {
 };
 
 Map.prototype.isRealWall = function(grid) {
-  var pos = g2p(grid);
-  var tilePos = {x:pos.x / 2, y:pos.y / 2};
-  var walls = this.walls.getTiles(tilePos.x, tilePos.y, 0, 0);
-  if (walls[0].index >= 0) {
-    return true;
-  }
-  
-  return false;
+  var wall = this.map.getTile(grid.x, grid.y, this.walls);
+  return wall !== null && wall.index >= 0;
 };
 
 Map.prototype.isWall = function(grid) {
@@ -131,33 +117,29 @@ Map.prototype.isWall = function(grid) {
     return true;
   }
   
-  var pos = g2p(grid);
-  var tilePos = {x:pos.x / 2, y:pos.y / 2};
   // Also check already-unbroken items
   // These shouldn't be broken again
-  var unbrokens = this.before.getTiles(tilePos.x, tilePos.y, 0, 0);
-  if (unbrokens[0].index >= 0 && unbrokens[0].alpha > 0) {
-    return true;
-  }
-  
-  return false;
+  var unbroken = this.map.getTile(grid.x, grid.y, this.before);
+  return unbroken !== null && unbroken.index >= 0 && unbroken.alpha > 0;
 };
 
 // Returns tile indices for before, after
 Map.prototype.destroyAt = function(grid, dir) {
-  var pos = g2p(grid);
-  var tilePos = {x:pos.x / 2, y:pos.y / 2};
-  var objects = this.after.getTiles(tilePos.x, tilePos.y, 0, 0);
+  var object = this.map.getTile(grid.x, grid.y, this.after);
   var isWall = this.isWall(grid);
   // Can only destroy wall-mounted objects from below
-  if (objects[0].index >= 0 && objects[0].alpha === 1 && (!isWall || dir == 'up')) {
-    var indexAfter = objects[0].index;
-    objects[0].alpha = 0;
+  if (object !== null && object.index >= 0 && object.alpha === 1 &&
+      (!isWall || dir == 'up')) {
+    var indexAfter = object.index;
+    object.alpha = 0;
     this.after.dirty = true;
-    var objectsBefore = this.before.getTiles(tilePos.x, tilePos.y, 0, 0);
-    objectsBefore[0].alpha = 1;
-    this.before.dirty = true;
-    var indexBefore = objectsBefore[0].index;
+    var objectBefore = this.map.getTile(grid.x, grid.y, this.before);
+    var indexBefore = -1;
+    if (objectBefore !== null) {
+      objectBefore.alpha = 1;
+      this.before.dirty = true;
+      indexBefore = objectBefore.index;
+    }
     //console.log('destroy ' + indexBefore + ':' + indexAfter);
     return [indexBefore, indexAfter];
   }
@@ -166,19 +148,21 @@ Map.prototype.destroyAt = function(grid, dir) {
 
 // Returns tile indices for before, after
 Map.prototype.restoreAt = function(grid, dir) {
-  var pos = g2p(grid);
-  var tilePos = {x:pos.x / 2, y:pos.y / 2};
-  var objects = this.after.getTiles(tilePos.x, tilePos.y, 0, 0);
+  var object = this.map.getTile(grid.x, grid.y, this.after);
   var isWall = this.isRealWall(grid);
   // Can only destroy wall-mounted objects from below
-  if (objects[0].index >= 0 && objects[0].alpha === 0 && (!isWall || dir == 'up')) {
-    var indexAfter = objects[0].index;
-    objects[0].alpha = 1;
+  if (object !== null && object.index >= 0 && object.alpha === 0 &&
+      (!isWall || dir == 'up')) {
+    var indexAfter = object.index;
+    object.alpha = 1;
     this.after.dirty = true;
-    var objectsBefore = this.before.getTiles(tilePos.x, tilePos.y, 0, 0);
-    objectsBefore[0].alpha = 0;
-    this.before.dirty = true;
-    var indexBefore = objectsBefore[0].index;
+    var objectBefore = this.map.getTile(grid.x, grid.y, this.before);
+    var indexBefore = -1;
+    if (objectBefore !== null) {
+      objectBefore.alpha = 0;
+      this.before.dirty = true;
+      indexBefore = objectBefore.index;
+    }
     //console.log('restore ' + indexBefore + ':' + indexAfter);
     return [indexBefore, indexAfter];
   }
