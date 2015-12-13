@@ -9,7 +9,7 @@ var Title = function(game, group, gameState) {
   text.strokeThickness = 6;
   text.setShadow(3, 3, 'rgba(0,0,0,0.9)', 5);
   group.add(text);
-  
+
   var instr = game.add.text(SCREEN_WIDTH / 2,
                             SCREEN_HEIGHT * 0.7,
                             'Press       to start',
@@ -20,7 +20,7 @@ var Title = function(game, group, gameState) {
   instr.strokeThickness = 3;
   instr.setShadow(3, 3, 'rgba(0,0,0,0.9)', 5);
   group.add(instr);
-  
+
   var arrows = game.add.sprite(SCREEN_WIDTH * 0.455,
                                SCREEN_HEIGHT * 0.7,
                                'arrows');
@@ -30,13 +30,13 @@ var Title = function(game, group, gameState) {
   arrows.animations.add('bob', [0, 1], 4, true);
   arrows.animations.play('bob');
   group.add(arrows);
-  
+
   this.group = group;
   this.sound = game.add.sound('beep');
-  
+
   var levelsCompleted =
     parseInt(localStorage["DrunkenViking.levels"]);
-  for (var i = 0; i < levelsCompleted + 1; i++) {
+  for (var i = 0; i < Math.min(levelsCompleted + 1, levels.length); i++) {
     var spacing = 76;
     var x = SCREEN_WIDTH / 2 - (3 - i) * spacing;
     var y = SCREEN_HEIGHT * 0.88;
@@ -58,7 +58,7 @@ var Title = function(game, group, gameState) {
       }
     }(i), this);
     group.add(button);
-    
+
     var label = game.add.text(x, y + 20,
                               levels[i].day,
                               {font: "16px VT323",
