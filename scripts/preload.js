@@ -13,7 +13,7 @@ BasicGame.Preload.prototype = {
         this.preloadBar.animations.add('bob', [0, 1], 4, true);
         this.preloadBar.animations.play('bob');
         this.load.setPreloadSprite(this.preloadBar);
-        
+
         this.game.load.tilemap('level1', 'scripts/levels/level1.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.tilemap('level2', 'scripts/levels/level2.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.tilemap('level3', 'scripts/levels/level3.json', null, Phaser.Tilemap.TILED_JSON);
@@ -34,7 +34,7 @@ BasicGame.Preload.prototype = {
         this.game.load.spritesheet('dialog', 'images/dialog.png', 192, 48);
         this.game.load.spritesheet('arrows', 'images/arrows.png', 52, 34);
         this.game.load.image('win', 'images/win.png');
-        
+
         this.game.load.audio('birds', 'sounds/birds.mp3');
         this.game.load.audio('crickets', 'sounds/crickets.mp3');
         this.game.load.audio('fanfare', 'sounds/fanfare.mp3');

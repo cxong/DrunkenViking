@@ -5,7 +5,7 @@ GameState.prototype.preload = function() {
 
 GameState.prototype.create = function() {
   this.game.stage.backgroundColor = 0x664a33;
-  
+
   this.sounds = {
     step: this.game.add.audio("step"),
     bump: this.game.add.audio("bump"),
@@ -25,7 +25,7 @@ GameState.prototype.create = function() {
     dialogs: this.game.add.group(),
     title: this.game.add.group()
   };
-  
+
   this.levelIndex = 0;
   this.map = new Map(this.game, this.groups.bg, levels[this.levelIndex].level);
 
@@ -49,7 +49,7 @@ GameState.prototype.create = function() {
   this.replaying = false;
   // Hide dialog initially
   this.groups.dialogs.alpha = 0;
-  
+
   this.hintText = this.game.add.text(SCREEN_WIDTH - 190, 24, 'Press R to reset', {
     font: "24px VT323", fill: "#66ff66", align: "right"
   });
@@ -62,9 +62,9 @@ GameState.prototype.create = function() {
   this.hintText.alpha = 0;
   this.hintDisplayCounter = 0;
   this.shoveCounter = 0;
-  
+
   this.title = new Title(this.game, this.groups.title, this);
-  
+
   this.lastDirection = null;
   this.moveRepeatCounter = 0;
   var registerKey = function(thegame, keycode, dir) {
@@ -161,7 +161,7 @@ GameState.prototype.update = function() {
     }
     this.instantReplayCounter++;
   }
-  
+
   // Show hint text
   if (this.hintText.alpha > 0) {
     this.hintDisplayCounter++;
@@ -206,11 +206,11 @@ GameState.prototype.move = function(dir) {
     }
     return;
   }
-  
+
   // Find new grid position to move to
   var grid = {x:this.player.grid.x, y:this.player.grid.y};
   addDir(grid, dir);
-  
+
   // Normal game movement
   if (this.movesIndex < 0) {
     // Check for out of bounds
