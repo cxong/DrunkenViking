@@ -1,4 +1,4 @@
-Drunken Viking
+![Drunken Viking](https://raw.githubusercontent.com/cxong/DrunkenViking/master/logo2.png)
 ==============
 
 ![](https://raw.githubusercontent.com/cxong/DrunkenViking/master/logo.png)
