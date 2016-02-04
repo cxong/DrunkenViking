@@ -1,10 +1,11 @@
 {
   "name": "Drunken Viking",
   "description": "Top-down puzzle game, retrace your drunken rampage from the night before",
-  "launch_path": "/index.html",
+  "launch_path": "http://drunkenvikinggame.com/index.html",
+  "installs_allowed_from": ["http://drunkenvikinggame.com"],
   "icons": {
-    "512": "images/icon-512.png",
-    "128": "images/icon-128.png"
+    "512": "http://drunkenvikinggame.com/images/icon-512.png",
+    "128": "http://drunkenvikinggame.com/images/icon-128.png"
   },
   "developer": {
     "name": "congusbongus",
