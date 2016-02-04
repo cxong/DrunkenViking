@@ -4,7 +4,6 @@
   "launch_path": "/DrunkenViking/index.html",
   "installs_allowed_from": ["http://cxong.github.io/DrunkenViking/"],
   "icons": {
-    "512": "http://cxong.github.io/DrunkenViking/images/icon-512.png",
     "128": "http://cxong.github.io/DrunkenViking/images/icon-128.png",
 	"336": "http://cxong.github.io/DrunkenViking/images/icon-336.png"
   },
