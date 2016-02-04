@@ -1,13 +1,13 @@
 var BasicGame = {};
-BasicGame.Preload = function (game) {
+
+BasicGame.Preload = function(game) {
     this.preloadBar = null;
 };
 
 BasicGame.Preload.prototype = {
-    preload: function () {
-        this.preloadBar = this.add.sprite((SCREEN_WIDTH - TILE_SIZE) / 2,
-                                          (SCREEN_HEIGHT - TILE_SIZE) / 2,
-                                          'platino');
+    preload: function() {
+        this.preloadBar = this.add.sprite((SCREEN_WIDTH - TILE_SIZE) / 2, (SCREEN_HEIGHT - TILE_SIZE) / 2,
+            'platino');
         this.preloadBar.width = TILE_SIZE;
         this.preloadBar.height = TILE_SIZE;
         this.preloadBar.animations.add('bob', [0, 1], 4, true);
@@ -26,20 +26,20 @@ BasicGame.Preload.prototype = {
         this.game.load.image('tiles_before', 'images/Objects/items_before.png');
         this.game.load.image('tiles_after', 'images/Objects/items_after.png');
         this.game.load.image('tiles_bed', 'images/Objects/bed.png');
+        this.game.load.image('return', 'images/Objects/return.png');
         this.game.load.image('decor', 'images/decor.png');
         for (var i = 0; i < 7; i++) {
             this.game.load.image('button' + i, 'images/buttons/' + i + '.png');
         }
         this.game.load.spritesheet('viking', 'images/viking.png', 16, 16);
         this.game.load.spritesheet('dialog', 'images/dialog.png', 192, 48);
-        this.game.load.spritesheet('arrows', 'images/arrows.png', 52, 34);
+        this.game.load.spritesheet('arrows', 'images/bidirection_arrows.png', 52, 34);
         this.game.load.image('win', 'images/win.png');
 
         this.game.load.audio('birds', 'sounds/birds.mp3');
         this.game.load.audio('crickets', 'sounds/crickets.mp3');
         this.game.load.audio('fanfare', 'sounds/fanfare.mp3');
         this.game.load.audio('tada', 'sounds/tada.mp3');
-
         this.game.load.audio('step', 'sounds/step.wav');
         this.game.load.audio('bump', 'sounds/bump.wav');
         this.game.load.audio('hic', 'sounds/hiccup.wav');
@@ -53,8 +53,7 @@ BasicGame.Preload.prototype = {
         this.game.load.audio('smash', 'sounds/smash.wav');
         this.game.load.audio('beep', 'sounds/beep.wav');
     },
-
-    create: function () {
+    create: function() {
         //this.preloadBar.cropEnabled = false;
 
         this.state.start('game');

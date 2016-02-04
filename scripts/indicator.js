@@ -21,4 +21,5 @@ Indicator.prototype.update = function() {
     this.alpha = 1 - Phaser.Easing.Cubic.Out(efrac - 1);
   }
   this.alpha *= 0.5;
+  
 };
