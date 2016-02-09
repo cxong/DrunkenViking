@@ -4,8 +4,8 @@
   "launch_path": "/DrunkenViking/index.html",
   "installs_allowed_from": ["http://cxong.github.io/DrunkenViking/"],
   "icons": {
-    "128": "http://cxong.github.io/DrunkenViking/images/icon-128.png",
-    "336": "http://cxong.github.io/DrunkenViking/images/icon-circle-336.png"
+    "128": "/DrunkenViking/images/icon-128.png",
+    "336": "/DrunkenViking/images/icon-circle-336.png"
   },
   "developer": {
     "name": "congusbongus",
